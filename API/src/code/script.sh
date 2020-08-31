@@ -11,3 +11,5 @@ exec  2> $"errors"
 
 g++ hello.cpp
 ./a.out < input.txt
+
+mv logfile.txt completed
