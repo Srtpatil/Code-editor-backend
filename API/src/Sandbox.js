@@ -60,7 +60,7 @@ class Sandbox {
     });
     console.log("------------------------------");
     //Check For File named "completed" after every 1 second
-    let flag = false;
+    let flag = true;
     let id = setInterval(() =>
     {
         timer++;
@@ -70,11 +70,10 @@ class Sandbox {
 
             if(err && timer < 10)
             {
-                console.log(err);
                 flag = true;
                 return;
             }
-            else if(timer < 10)
+            else if(timer < 10 && flag)
             {
                 console.log("DONE")
                 flag = false;
@@ -93,18 +92,14 @@ class Sandbox {
 
         //remove files
         // console.log("------------------------------")
-        // exec("rm " + this.path + "completed -f", (err) => 
-        // {
-        //     console.log(err);
-        // });
 
-        // exec("rm " + this.path + "errors -f", (err) => 
-        // {
-        //     console.log(err);
-        // });
         if(!flag)
         {
-            console.log("Removing User Files");
+            exec("find " + this.path + " -type f -not -name 'script.sh' -delete", (err) => 
+            {
+                console.log("error deleting ==> ", err);
+            })
+            console.log("Clearing INterval");
             clearInterval(id);
         }
     }, 1000);
