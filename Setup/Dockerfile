@@ -6,5 +6,5 @@ RUN apt-get install -y gcc
 RUN apt-get install -y g++
 RUN apt-get install -y python3
 
-RUN mkdir /temp
-WORKDIR temp/
+RUN mkdir /code
+WORKDIR code/
