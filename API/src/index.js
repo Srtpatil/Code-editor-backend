@@ -1,8 +1,6 @@
 const express = require("express");
-const { exec } = require("child_process");
 const Sandbox = require("./Sandbox");
 
-const fs = require("fs");
 const app = express();
 
 app.use(express.json());
@@ -12,14 +10,8 @@ app.post("/compile", (req, res) => {
   const data = req.body;
   const path = __dirname + "/code/";
   const sandbox = new Sandbox(path, vm_name, data);
-  sandbox.prepare();
-  sandbox.execute((data1, errData) => 
-  {
-    res.send({
-      output : data1,
-      error : errData
-    })
-  })
+  sandbox.prepare(res);
+  
 });
 
 const port = 3000;

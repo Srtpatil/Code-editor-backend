@@ -1,6 +1,5 @@
 const exec = require("child_process").exec;
 const fs = require("fs");
-const { error } = require("console");
 
 const extension = {
   1: "main.cpp",
@@ -16,7 +15,7 @@ class Sandbox {
     this.stdin = data.stdin;
   }
 
-  prepare() {
+  prepare(res) {
     const srcFile = this.path + "/" + extension[this.language_id];
     const inputFile = this.path + "/input.txt";
     fs.writeFile(srcFile, this.source_code, (err) => {
@@ -35,6 +34,13 @@ class Sandbox {
         return console.log(err);
       }
       console.log("script made executable");
+      this.execute((data1, errData) => 
+      {
+        res.send({
+          output : data1,
+          error : errData
+        })
+      });
     });
     // exec("./code/script.sh", (err) => {
     //   if (err) {
@@ -78,13 +84,12 @@ class Sandbox {
                 
                 fs.readFile(this.path + "errors", 'utf8', (err, errdata) =>
                 {
-                    console.log("errror data -> ", errdata)
+                    console.log("errror data -> ", errdata);
+                    flag = false;
                     if(!errdata)
                     {
                         errdata = "";
                     }
-
-                    flag = false;
                     success(data, errdata);
 
                 })
