@@ -1,6 +1,7 @@
 const express = require("express");
 const { exec } = require('child_process');
-const mkdirp = require('mkdirp')
+const Sandbox = require('./Sandbox');
+
 const fs = require('fs');
 const app = express();
 const port = 3000;
@@ -9,20 +10,26 @@ app.use(express.json());
 
 const srcDirectory = __dirname;
 
+
 app.post("/compile", (req, res) => {
 
   const data = req.body;
   console.log(data);
 
-  mkdirp(srcDirectory + "/code/usercode").then((_) => 
+
+  fs.writeFile(srcDirectory + "/code/file.cpp", data.source_code, (err) => 
   {
-    fs.writeFile(srcDirectory + "/code/usercode/file.cpp", data.source_code, (err) => 
-    {
-    });
+  });
+
+  fs.writeFile(srcDirectory + "/code/input.txt", data.stdin, (err) => 
+  {
+
   })
 
+  const sandbox = new Sandbox();
+  sandbox.execute();
 
-  //remove usercode folder
+  //remove usercode 
 
   // setTimeout(() => 
   // {
