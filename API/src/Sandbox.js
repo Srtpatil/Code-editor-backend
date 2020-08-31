@@ -70,13 +70,12 @@ class Sandbox {
 
             if(err && timer < 10)
             {
-                flag = true;
                 return;
             }
             else if(timer < 10 && flag)
             {
                 console.log("DONE")
-                flag = false;
+                
                 fs.readFile(this.path + "errors", 'utf8', (err, errdata) =>
                 {
                     console.log("errror data -> ", errdata)
@@ -84,6 +83,8 @@ class Sandbox {
                     {
                         errdata = "";
                     }
+
+                    flag = false;
                     success(data, errdata);
 
                 })
