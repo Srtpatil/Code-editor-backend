@@ -7,19 +7,21 @@ const port = 3000;
 
 app.use(express.json());
 
+const srcDirectory = __dirname;
+
 app.post("/compile", (req, res) => {
 
   const data = req.body;
   console.log(data);
 
-  mkdirp("./code/usercode").then((_) => 
+  mkdirp(srcDirectory + "/code/usercode").then((_) => 
   {
-    fs.writeFile("./code/usercode/file.cpp", data.source_code, (err) => 
+    fs.writeFile(srcDirectory + "/code/usercode/file.cpp", data.source_code, (err) => 
     {
     });
   })
 
-  
+
   //remove usercode folder
 
   // setTimeout(() => 
