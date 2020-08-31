@@ -4,44 +4,26 @@ const Sandbox = require("./Sandbox");
 
 const fs = require("fs");
 const app = express();
-const port = 3000;
 
 app.use(express.json());
 
-const srcDirectory = __dirname;
-const vm_name = "virtual_machine";
-
 app.post("/compile", (req, res) => {
+  const vm_name = "virtual_machine";
   const data = req.body;
-  console.log(data);
-
-  fs.writeFile(srcDirectory + "/code/file.cpp", data.source_code, (err) => {});
-
-  fs.writeFile(srcDirectory + "/code/input.txt", data.stdin, (err) => {});
-
-  const workDir = srcDirectory + "/code/";
-
-  const sandbox = new Sandbox(workDir, data, vm_name);
-  sandbox.execute((data, errData) => {
+  const path = __dirname + "/code/";
+  const sandbox = new Sandbox(path, vm_name, data);
+  sandbox.prepare();
+  sandbox.execute((data1, errData) => 
+  {
     res.send({
-      output: data,
-      error: errData,
-    });
-  });
-
-  //remove usercode
-
-  // setTimeout(() =>
-  // {
-  //   exec("rm -r ./code/usercode", (err, stdout, stderr) =>
-  //   {
-  //       console.log("deleting");
-  //   })
-  // }, 3000)
-
-  res.send("index.js");
+      output : data1,
+      error : errData
+    })
+  })
 });
 
+const port = 3000;
 app.listen(port, () => {
+  console.log(__dirname);
   console.log("Server is up on port ", port);
 });

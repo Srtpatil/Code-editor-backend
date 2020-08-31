@@ -9,7 +9,7 @@ exec  2> $"errors"
 
 
 
-g++ hello.cpp
+g++ main.cpp
 ./a.out < input.txt
 
 mv logfile.txt completed
