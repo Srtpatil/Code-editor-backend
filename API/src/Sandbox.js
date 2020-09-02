@@ -1,10 +1,6 @@
 const exec = require("child_process").exec;
 const fs = require("fs");
-
-const extension = {
-  1: "main.cpp",
-  2: "main.py",
-};
+const Languages = require("./Languages");
 
 class Sandbox {
   constructor(path, vm_name, data) {
@@ -14,6 +10,8 @@ class Sandbox {
     this.language_id = data.language_id;
     this.stdin = data.stdin;
     this.timeout = 15;
+    this.compiler_name = Languages[this.language_id]["compiler"];
+    this.outputFile = Languages[this.language_id]["output"];
   }
 
   WriteFile(srcFile, fileContent) {
@@ -29,8 +27,8 @@ class Sandbox {
   }
 
   prepare(res) {
-    const srcFile = this.path + "/" + extension[this.language_id];
-    const inputFile = this.path + "/input.txt";
+    const srcFile = this.path + Languages[this.language_id]["fileName"];
+    const inputFile = this.path + "input.txt";
 
     Promise.all([
       this.WriteFile(srcFile, this.source_code),
@@ -38,7 +36,7 @@ class Sandbox {
     ]).then((values) => {
       console.log("Promise Values -> ", values);
 
-      exec("chmod +x " + this.path + "/script.sh", (err) => {
+      exec("chmod +x " + this.path + "script.sh", (err) => {
         if (err) {
           return console.log(err);
         }
@@ -60,7 +58,12 @@ class Sandbox {
       this.path +
       ":/code/  --rm " +
       this.vm_name +
-      " ./script.sh";
+      " ./script.sh " +
+      this.compiler_name +
+      " " +
+      Languages[this.language_id]["fileName"] +
+      " " +
+      this.outputFile;
     console.log(dockerCommand);
     exec(dockerCommand, (err) => {
       if (err) {
@@ -89,12 +92,6 @@ class Sandbox {
           });
         }
       });
-
-      //remove files
-      // console.log("------------------------------")
-      if (flag) {
-        return;
-      }
 
       if (!flag) {
         exec(
