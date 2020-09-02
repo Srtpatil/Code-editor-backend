@@ -13,6 +13,7 @@ class Sandbox {
     this.source_code = data.source_code;
     this.language_id = data.language_id;
     this.stdin = data.stdin;
+    this.timeout = 15;
   }
 
   prepare(res) {
@@ -20,28 +21,28 @@ class Sandbox {
     const inputFile = this.path + "/input.txt";
     fs.writeFile(srcFile, this.source_code, (err) => {
       if (err) {
-        console.log(err);
-      }
-    });
-    fs.writeFile(inputFile, this.stdin, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-
-    exec("chmod +x " + this.path + "/script.sh", (err) => {
-      if (err) {
         return console.log(err);
       }
-      console.log("script made executable");
-      this.execute((data1, errData) => 
-      {
-        res.send({
-          output : data1,
-          error : errData
-        })
+      fs.writeFile(inputFile, this.stdin, (err) => {
+        if (err) {
+          return console.log(err);
+        }
+
+        exec("chmod +x " + this.path + "/script.sh", (err) => {
+          if (err) {
+            return console.log(err);
+          }
+          console.log("script made executable");
+          this.execute((data1, errData) => {
+            res.send({
+              output: data1,
+              error: errData,
+            });
+          });
+        });
       });
     });
+
     // exec("./code/script.sh", (err) => {
     //   if (err) {
     //     return console.log(err);
@@ -67,47 +68,42 @@ class Sandbox {
     console.log("------------------------------");
     //Check For File named "completed" after every 1 second
     let flag = true;
-    let id = setInterval(() =>
-    {
-        timer++;
-       
-        fs.readFile(this.path + "completed", "utf8", (err, data) =>
-        {
+    let id = setInterval(() => {
+      timer++;
 
-            if(err && timer < 10)
-            {
-                return;
+      fs.readFile(this.path + "completed", "utf8", (err, data) => {
+        if (err && timer < this.timeout) {
+          return;
+        } else if (timer < this.timeout && flag) {
+          console.log("DONE");
+
+          fs.readFile(this.path + "errors", "utf8", (err, errdata) => {
+            console.log("errror data -> ", errdata);
+            flag = false;
+            if (!errdata) {
+              errdata = "";
             }
-            else if(timer < 10 && flag)
-            {
-                console.log("DONE")
-                
-                fs.readFile(this.path + "errors", 'utf8', (err, errdata) =>
-                {
-                    console.log("errror data -> ", errdata);
-                    flag = false;
-                    if(!errdata)
-                    {
-                        errdata = "";
-                    }
-                    success(data, errdata);
-
-                })
-            }
-        })
-
-        //remove files
-        // console.log("------------------------------")
-
-        if(!flag)
-        {
-            exec("find " + this.path + " -type f -not -name 'script.sh' -delete", (err) => 
-            {
-                console.log("error deleting ==> ", err);
-            })
-            console.log("Clearing INterval");
-            clearInterval(id);
+            success(data, errdata);
+          });
         }
+      });
+
+      //remove files
+      // console.log("------------------------------")
+      if (flag) {
+        return;
+      }
+
+      if (!flag) {
+        exec(
+          "find " + this.path + " -type f -not -name 'script.sh' -delete",
+          (err) => {
+            console.log("error deleting ==> ", err);
+          }
+        );
+        console.log("Clearing INterval");
+        clearInterval(id);
+      }
     }, 1000);
   }
 }

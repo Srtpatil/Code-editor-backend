@@ -16,6 +16,5 @@ app.post("/compile", (req, res) => {
 
 const port = 3000;
 app.listen(port, () => {
-  console.log(__dirname);
   console.log("Server is up on port ", port);
 });
