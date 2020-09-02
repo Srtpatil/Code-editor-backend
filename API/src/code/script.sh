@@ -16,4 +16,7 @@ else
     fi
 fi
 
+# g++ main.cpp
+# ./a.out < input.txt
+
 mv logfile.txt completed
