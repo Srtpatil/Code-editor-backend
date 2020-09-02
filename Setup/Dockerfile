@@ -7,4 +7,4 @@ RUN apt-get install -y g++
 RUN apt-get install -y python3
 
 RUN mkdir /code
-WORKDIR code/
+WORKDIR /code/
