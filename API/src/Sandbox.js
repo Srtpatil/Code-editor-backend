@@ -31,29 +31,6 @@ class Sandbox {
   prepare(res) {
     const srcFile = this.path + "/" + extension[this.language_id];
     const inputFile = this.path + "/input.txt";
-    // fs.writeFile(srcFile, this.source_code, (err) => {
-    //   if (err) {
-    //     return console.log(err);
-    //   }
-    //   fs.writeFile(inputFile, this.stdin, (err) => {
-    //     if (err) {
-    //       return console.log(err);
-    //     }
-
-    //     exec("chmod +x " + this.path + "/script.sh", (err) => {
-    //       if (err) {
-    //         return console.log(err);
-    //       }
-    //       console.log("script made executable");
-    //       this.execute((data1, errData) => {
-    //         res.send({
-    //           output: data1,
-    //           error: errData,
-    //         });
-    //       });
-    //     });
-    //   });
-    // });
 
     Promise.all([
       this.WriteFile(srcFile, this.source_code),
@@ -73,22 +50,7 @@ class Sandbox {
           });
         });
       });
-      
-      this.execute((data1, errData) => {
-        res.send({
-          output: data1,
-          error: errData,
-        });
-      });
     });
-
-    this.WriteFile(srcFile, this.source_code);
-    // exec("./code/script.sh", (err) => {
-    //   if (err) {
-    //     return console.log(err);
-    //   }
-    //   console.log("Successful");
-    // });
   }
 
   execute(success) {
