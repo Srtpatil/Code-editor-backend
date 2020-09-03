@@ -5,7 +5,7 @@ file=$2
 output=$3
 
 exec  1> $"logfile.txt"
-exec  2> $"errors"
+exec  2> $"errors.txt"
 
 if [ "$output" = "" ]; then
     $compiler $file < $"input.txt"
@@ -16,7 +16,4 @@ else
     fi
 fi
 
-# g++ main.cpp
-# ./a.out < input.txt
-
-mv logfile.txt completed
+mv logfile.txt output.txt

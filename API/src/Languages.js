@@ -1,5 +1,3 @@
-
-
 const Languages = {
     0 : {
         fileName : "main.c",
