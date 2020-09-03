@@ -3,10 +3,12 @@ require("./db/mongoose.js");
 const Sandbox = require("./Sandbox");
 const random = require("./utils/utils");
 const userRouter = require("./db/routers/user");
+const fileRouter = require("./db/routers/File");
 const app = express();
 
 app.use(express.json());
 app.use(userRouter);
+app.use(fileRouter);
 
 app.all("*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

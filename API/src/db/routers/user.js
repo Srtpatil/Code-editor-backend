@@ -3,7 +3,7 @@ const User = require("../models/user");
 
 const router = new express.Router();
 
-router.post("/users", (req, res) => {
+router.post("/create_user", (req, res) => {
   const user = new User(req.body);
   user
     .save()

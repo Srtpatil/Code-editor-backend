@@ -5,12 +5,14 @@ const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
+    trim: true,
     required: true,
   },
   email: {
     type: String,
     unique: true,
     lowercase: true,
+    trim: true,
     validate(value) {
       if (!validator.isEmail(value)) {
         throw new Error("Email is invalid");
