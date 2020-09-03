@@ -1,6 +1,6 @@
 const exec = require("child_process").exec;
 const fs = require("fs");
-const Languages = require("./Languages");
+const Languages = require("./utils/Languages");
 
 class Sandbox {
   constructor(folder, path, vm_name, data) {
