@@ -1,6 +1,11 @@
 
 
 const Languages = {
+    0 : {
+        fileName : "main.c",
+        compiler : "gcc",
+        output : "./a.out"
+    },
     1 : {
         fileName : "main.cpp",
         compiler : "g++",
