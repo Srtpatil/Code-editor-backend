@@ -47,18 +47,15 @@ class Sandbox {
         Promise.all([
           this.WriteFile(srcFile, this.source_code),
           this.WriteFile(inputFile, this.stdin),
-        ]).then((values) => {
-          // console.log("Promise Values -> ", values);
-
+        ]).then(() => {
           exec("chmod +x " + this.userPath + "/script.sh", (err) => {
             if (err) {
               return console.log(err);
             }
-            // console.log("script made executable");
-            this.execute((data1, errData) => {
+
+            this.execute((error, result) => {
               res.send({
-                output: data1,
-                error: errData,
+                output: error ? error : result,
               });
             });
           });
@@ -92,14 +89,11 @@ class Sandbox {
     let id = setInterval(() => {
       timer++;
 
-      fs.readFile(this.userPath + "/completed", "utf8", (err, data) => {
-
+      fs.readFile(this.userPath + "/output.txt", "utf8", (err, data) => {
         if (err && timer < this.timeout) {
           return;
         } else if (timer < this.timeout && flag) {
-          // console.log("DONE");
-
-          fs.readFile(this.userPath + "/errors", "utf8", (err, errdata) => {
+          fs.readFile(this.userPath + "/error.txt", "utf8", (err, errdata) => {
             if (errdata) {
               console.log("errror data -> ", errdata);
             }
@@ -107,7 +101,7 @@ class Sandbox {
             if (!errdata) {
               errdata = "";
             }
-            success(data, errdata);
+            success(errdata, data);
           });
         }
       });
@@ -118,7 +112,7 @@ class Sandbox {
             console.log("error deleting ==> ", err);
           }
         });
-        console.log("Clearing INterval");
+        console.log("Clearing interval");
         clearInterval(id);
       }
     }, 1000);
