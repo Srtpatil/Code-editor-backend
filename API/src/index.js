@@ -6,6 +6,14 @@ const app = express();
 
 app.use(express.json());
 
+app.all("*", function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+
+  next();
+});
+
 app.post("/compile", (req, res) => {
   const vm_name = "virtual_machine";
   const data = req.body;
@@ -17,6 +25,5 @@ app.post("/compile", (req, res) => {
 
 const port = 3000;
 app.listen(port, () => {
-
   console.log("Server is up on port ", port);
 });
