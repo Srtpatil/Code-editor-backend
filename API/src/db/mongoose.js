@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/code-editor-api", {
+const database = "code-editor-api";
+mongoose.connect("mongodb://127.0.0.1:27017/" + database, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
 });
-
