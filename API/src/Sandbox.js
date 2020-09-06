@@ -105,6 +105,12 @@ class Sandbox {
             success(errdata, data);
           });
         }
+        else if(timer > this.timeout)
+        {
+          let errordata = "Server Timed Out! Please Try After Some Time";
+          flag = false;
+          success(errordata, "");
+        }
       });
 
       if (!flag) {
