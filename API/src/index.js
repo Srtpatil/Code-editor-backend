@@ -2,7 +2,6 @@ const express = require("express");
 require("./db/mongoose.js");
 const Sandbox = require("./Sandbox");
 const random = require("./utils/utils");
-const userRouter = require("./db/routers/user");
 const fileRouter = require("./db/routers/File");
 const app = express();
 
@@ -15,7 +14,6 @@ app.all("*", function (req, res, next) {
 });
 
 app.use(express.json());
-app.use(userRouter);
 app.use(fileRouter);
 
 
@@ -34,15 +32,3 @@ const port = 3000;
 app.listen(port, () => {
   console.log("Server is up on port ", port);
 });
-
-// const User = require("./db/models/user");
-// const File = require("./db/models/File");
-
-// const main = async () => 
-// {
-//   const user = await User.findById("5f534efb4c7b881e0609c3ea");
-//   await user.populate('files').execPopulate();
-//   console.log(user.files);
-// }
-
-// main();

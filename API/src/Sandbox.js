@@ -91,6 +91,7 @@ class Sandbox {
 
       fs.readFile(this.userPath + "/output.txt", "utf8", (err, data) => {
         if (err && timer < this.timeout) {
+          console.log(err);
           return;
         } else if (timer < this.timeout && flag) {
           fs.readFile(this.userPath + "/errors.txt", "utf8", (err, errdata) => {

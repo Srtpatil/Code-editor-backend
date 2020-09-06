@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const fileSchema = new mongoose.Schema({
-
   fileName: {
     type: String,
     required: true,
@@ -12,17 +11,12 @@ const fileSchema = new mongoose.Schema({
   },
   stdInput: {
     type: String,
-    default: " ",
+    default: "",
   },
   languageId: {
     type: String,
     required: true,
-  },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
+  }
 });
 
 const File = mongoose.model("File", fileSchema);
