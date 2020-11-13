@@ -1,6 +1,7 @@
 const exec = require("child_process").exec;
 const fs = require("fs");
 const Languages = require("./utils/Languages");
+const { count } = require("console");
 
 class Sandbox {
   constructor(folder, path, vm_name, data) {
@@ -90,8 +91,9 @@ class Sandbox {
       timer++;
 
       fs.readFile(this.userPath + "/output.txt", "utf8", (err, data) => {
+
         if (err && timer < this.timeout) {
-          console.log(err);
+          console.log("ERROR ==> ", err);
           return;
         } else if (timer < this.timeout && flag) {
           fs.readFile(this.userPath + "/errors.txt", "utf8", (err, errdata) => {
@@ -105,7 +107,7 @@ class Sandbox {
             success(errdata, data);
           });
         }
-        else if(timer > this.timeout)
+        else if(timer > this.timeout && flag)
         {
           let errordata = "Server Timed Out! Please Try After Some Time";
           flag = false;

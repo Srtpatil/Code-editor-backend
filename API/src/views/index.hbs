@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.0/mode/clike/clike.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.css" />
+<link rel="stylesheet" href="https://codemirror.net/theme/darcula.css">
+<link rel="stylesheet" href="https://codemirror.net/theme/dracula.css">
+</head>
+<style>
+  .CodeMirror{
+    font-size: 14px;
+  }
+</style>
+<body>
+    <textarea id="editor"></textarea>
+</body>
+
+<script>
+    let myTextarea = document.querySelector("#editor");
+    let editor = CodeMirror.fromTextArea(myTextarea, {
+      lineNumbers: true,
+      theme : 'darcula',
+      smartIndent : true,
+      readOnly : true,
+      mode: "text/x-c++src"
+    });
+    let code = {{{file}}};
+    editor.getDoc().setValue(code.sourceCode);
+  </script>
+</html>

@@ -3,6 +3,7 @@ require("./db/mongoose.js");
 const Sandbox = require("./Sandbox");
 const random = require("./utils/utils");
 const fileRouter = require("./db/routers/File");
+const embeddedRouter = require('./db/routers/Embedded')
 const app = express();
 
 app.all("*", function (req, res, next) {
@@ -15,8 +16,9 @@ app.all("*", function (req, res, next) {
 
 app.use(express.json());
 app.use(fileRouter);
+app.use(embeddedRouter);
 
-
+app.set('view engine', 'hbs');
 
 app.post("/compile", (req, res) => {
   const vm_name = "virtual_machine";
